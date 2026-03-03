@@ -11,19 +11,16 @@ const Usersfiled = ({ register, editIndex, users }) => {
   const [showPassword, setshowPassword] = useState(false);
   const [error, seterror] = useState({});
 
-  // ✅ Autofill form when Edit button is clicked
   useEffect(() => {
     if (editIndex !== null && users[editIndex]) {
       setformData(users[editIndex]);
     }
   }, [editIndex, users]);
 
-  // Handle Input Change
   const inputChangeHandle = (e) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validate Form
   const validateInputFiled = () => {
     let newError = {};
 
@@ -36,26 +33,23 @@ const Usersfiled = ({ register, editIndex, users }) => {
     }
 
     if (!/^[A-Za-z0-9]{4,10}$/.test(formData.username)) {
-      newError.username = "4-10 characters (letters & numbers only)";
+      newError.username = "4-10 characters required";
     }
 
     if (!/^[A-Z][@#*%A-Za-z0-9]{6,10}$/.test(formData.password)) {
-      newError.password =
-        "Password must start with uppercase & contain special character (@,#,*,%)";
+      newError.password = "Invalid password format";
     }
 
     seterror(newError);
     return Object.keys(newError).length === 0;
   };
 
-  // Submit Form
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateInputFiled()) {
       register(formData);
 
-      // Reset Form
       setformData({
         fullName: "",
         email: "",
@@ -69,65 +63,67 @@ const Usersfiled = ({ register, editIndex, users }) => {
   };
 
   return (
-    <div className="bg-dark w-50 p-4 mx-auto rounded-3 mt-4">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter User Full Name"
-          className="form-control mb-2"
-          value={formData.fullName}
-          name="fullName"
-          onChange={inputChangeHandle}
-        />
-        <small className="text-danger">{error.fullName}</small>
+    <div className="card shadow border-0 mb-4">
+      <div className="card-body">
+        <form onSubmit={handleSubmit}>
 
-        <input
-          type="email"
-          placeholder="Enter Valid Email"
-          className="form-control mb-2 mt-3"
-          value={formData.email}
-          name="email"
-          onChange={inputChangeHandle}
-        />
-        <small className="text-danger">{error.email}</small>
-
-        <input
-          type="text"
-          placeholder="Enter Username"
-          className="form-control mb-2 mt-3"
-          value={formData.username}
-          name="username"
-          onChange={inputChangeHandle}
-        />
-        <small className="text-danger">{error.username}</small>
-
-        <div className="position-relative mt-3">
           <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Enter Valid Password"
-            className="form-control"
-            name="password"
-            value={formData.password}
+            type="text"
+            placeholder="Full Name"
+            className="form-control mb-2"
+            value={formData.fullName}
+            name="fullName"
             onChange={inputChangeHandle}
           />
-          {formData.password.length > 0 && (
-            <i
-              className={`${
-                showPassword ? "bi bi-eye-slash" : "bi bi-eye"
-              } position-absolute top-0 end-0 p-2`}
-              style={{ cursor: "pointer" }}
-              onClick={() => setshowPassword(!showPassword)}
-            />
-          )}
-        </div>
-        <small className="text-danger">{error.password}</small>
+          <small className="text-danger">{error.fullName}</small>
 
-        <div className="text-center mt-4">
-          <button className="btn btn-success">
+          <input
+            type="email"
+            placeholder="Email"
+            className="form-control mt-3"
+            value={formData.email}
+            name="email"
+            onChange={inputChangeHandle}
+          />
+          <small className="text-danger">{error.email}</small>
+
+          <input
+            type="text"
+            placeholder="Username"
+            className="form-control mt-3"
+            value={formData.username}
+            name="username"
+            onChange={inputChangeHandle}
+          />
+          <small className="text-danger">{error.username}</small>
+
+          <div className="position-relative mt-3">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="form-control"
+              name="password"
+              value={formData.password}
+              onChange={inputChangeHandle}
+            />
+            {formData.password.length > 0 && (
+              <i
+                className={`${
+                  showPassword ? "bi bi-eye-slash" : "bi bi-eye"
+                } position-absolute top-0 end-0 p-2`}
+                style={{ cursor: "pointer" }}
+                onClick={() => setshowPassword(!showPassword)}
+              />
+            )}
+          </div>
+          <small className="text-danger">{error.password}</small>
+
+          <button className="btn btn-primary w-100 mt-4">
             {editIndex !== null ? "Update User" : "Register User"}
           </button>
-        </div>
-      </form>
+
+        </form>
+      </div>
     </div>
   );
 };

@@ -6,7 +6,6 @@ import Usersdata from "./components/Userdata.jsx";
 import Usersfiled from "./components/Usersfiled.jsx";
 
 const App = () => {
-  // ✅ Load data from localStorage on first load
   const [users, setusers] = useState(() => {
     const savedUsers = localStorage.getItem("users");
     return savedUsers ? JSON.parse(savedUsers) : [];
@@ -14,12 +13,10 @@ const App = () => {
 
   const [editIndex, setEditIndex] = useState(null);
 
-  // ✅ Save to localStorage whenever users change
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
-  // ✅ Add or Update user
   const registerUser = (data) => {
     if (editIndex !== null) {
       const updatedUsers = [...users];
@@ -31,9 +28,8 @@ const App = () => {
     }
   };
 
-  // ✅ Delete user safely
   const deleteUser = (index) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete?");
+    const confirmDelete = window.confirm("Delete this user?");
     if (confirmDelete) {
       const filteredUsers = users.filter((_, i) => i !== index);
       setusers(filteredUsers);
@@ -42,13 +38,18 @@ const App = () => {
 
   const editUser = (index) => {
     setEditIndex(index);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div>
-      <h2 className="text-center mt-3">Register User Data</h2>
+    <div className="container py-4">
+      <h2 className="text-center mb-4">📱 User Registration App</h2>
 
-      <Usersfiled register={registerUser} editIndex={editIndex} users={users} />
+      <Usersfiled
+        register={registerUser}
+        editIndex={editIndex}
+        users={users}
+      />
 
       <Usersdata
         userDetails={users}

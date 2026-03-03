@@ -2,53 +2,47 @@ import React from "react";
 
 const Usersdata = ({ userDetails, deleteUser, editUser }) => {
   return (
-    <div className="mt-4">
-      <table className="table w-50 mx-auto">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Username</th>
-            <th>Password</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userDetails.length === 0 ? (
-            <tr>
-              <td colSpan="6" className="text-center text-muted">
-                No Users Found
-              </td>
-            </tr>
-          ) : (
-            userDetails.map((user, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{user.fullName}</td>
-                <td>{user.email}</td>
-                <td>{user.username}</td>
-                <td>{user.password}</td>
-                <td>
+    <div className="row mt-4">
+      {userDetails.length === 0 ? (
+        <div className="text-center text-muted">No Users Found</div>
+      ) : (
+        userDetails.map((user, index) => (
+          <div className="col-12 col-md-6 col-lg-4 mb-3" key={index}>
+            <div className="card shadow-sm border-0 h-100">
+              <div className="card-body">
+                <h5 className="card-title">
+                  👤 {user.fullName}
+                </h5>
+                <p className="mb-1">
+                  <strong>Email:</strong> {user.email}
+                </p>
+                <p className="mb-1">
+                  <strong>Username:</strong> {user.username}
+                </p>
+                <p className="mb-3">
+                  <strong>Password:</strong> ••••••••
+                </p>
+
+                <div className="d-flex justify-content-between">
                   <button
-                    className="btn btn-danger me-2"
-                    onClick={() => deleteUser(index)}
+                    className="btn btn-sm btn-warning"
+                    onClick={() => editUser(index)}
                   >
-                    Delete
+                    <i className="bi bi-pencil"></i> Edit
                   </button>
 
                   <button
-                    className="btn btn-warning"
-                    onClick={() => editUser(index)}
+                    className="btn btn-sm btn-danger"
+                    onClick={() => deleteUser(index)}
                   >
-                    Edit
+                    <i className="bi bi-trash"></i> Delete
                   </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };
